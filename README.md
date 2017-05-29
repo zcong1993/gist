@@ -1,4 +1,5 @@
 # gist
+[![wercker status](https://app.wercker.com/status/a69dff6e96eca8984e750f81af414cc4/s/master "wercker status")](https://app.wercker.com/project/byKey/a69dff6e96eca8984e750f81af414cc4)
 
 > gist cli in go
 
