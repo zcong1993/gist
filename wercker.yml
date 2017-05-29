@@ -13,10 +13,11 @@ build:
 
     # golint step!
     - wercker/golint
+    - install-packages:
+        packages: go install
 
     # Build the project
     - script:
         name: go build
         code: |
-          go install
           go build ./...
