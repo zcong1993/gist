@@ -15,9 +15,9 @@ build:
         name: go get
         code: |
             cd $WERCKER_SOURCE_DIR
+            ls
             go version
-            go get github.com/mitchellh/go-homedir
-            go get github.com/bitly/go-simplejson
+            go install
 
     # golint step!
     - wercker/golint
