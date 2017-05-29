@@ -51,16 +51,16 @@ func main() {
 	checkError(err)
 	configFile := path.Join(home, config)
 	help := flag.Bool("h", false, "show help")
-	setKey := flag.Bool("s", false, "set api key for auth")
-	delKey := flag.Bool("r", false, "remove api key")
+	setKey := flag.Bool("s", false, "set token for auth")
+	delKey := flag.Bool("r", false, "remove token")
 	isPublic := flag.Bool("p", false, "create public gist?")
 	description := flag.String("d", "published by 'zcong1993/gist' with golang", "add custom description")
 	flag.Parse()
 	if *help {
 		fmt.Println("\nUsage :\n\tgist [flag] [files...]")
 		fmt.Println("\nFlags :\n")
-		fmt.Println("\t -s, \t set api key for auth")
-		fmt.Println("\t -r, \t remove api key")
+		fmt.Println("\t -s, \t set token for auth")
+		fmt.Println("\t -r, \t remove token")
 		fmt.Println("\t -p, \t create public gist?")
 		fmt.Println("\t -d, \t add custom description, default is `published by 'zcong1993/gist' with golang`")
 		fmt.Println("\t -h, \t show help")
@@ -68,17 +68,17 @@ func main() {
 	}
 	if *setKey {
 		if len(flag.Args()) == 0 {
-			log.Fatal("api key is required")
+			log.Fatal("token is required")
 		}
 		err = ioutil.WriteFile(configFile, []byte(flag.Args()[0]), 0644)
 		checkError(err)
-		println("api key set success")
+		println("token set success")
 		os.Exit(0)
 	}
 	if *delKey {
 		err = ioutil.WriteFile(configFile, []byte(""), 0644)
 		checkError(err)
-		println("api key delete success")
+		println("token delete success")
 		os.Exit(0)
 	}
 	key := checkConf(configFile)
@@ -113,6 +113,6 @@ func main() {
 	checkError(err)
 	fmt.Printf("\nsuccess: link is %s\n", link)
 	if !user {
-		fmt.Println("\nwarning: gist owner is null, maybe your api key is not correct!")
+		fmt.Println("\nwarning: gist owner is null, maybe your token is not correct!")
 	}
 }
