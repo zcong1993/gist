@@ -18,4 +18,5 @@ build:
     - script:
         name: go build
         code: |
+          go install
           go build ./...

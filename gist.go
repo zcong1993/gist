@@ -19,12 +19,14 @@ const (
 	url    = "https://api.github.com/gists"
 )
 
+// post data struct
 type Data struct {
 	Public      bool `json:"public"`
 	Files       map[string]File `json:"files"`
 	Description string `json:"description"`
 }
 
+// single file struct
 type File struct {
 	Content string `json:"content"`
 }
