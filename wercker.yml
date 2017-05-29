@@ -13,10 +13,9 @@ build:
 
     # golint step!
     - wercker/golint
-    - go-install
 
     # Build the project
     - script:
         name: go build
         code: |
-          go build ./...
+          go build -i gist.go
