@@ -10,6 +10,13 @@ dev:
 build:
   # The steps that will be executed on build
   steps:
+    # Gets the dependencies
+    - script:
+        name: go get
+        code: |
+            cd $WERCKER_SOURCE_DIR
+            go version
+            go get -t ./...
 
     # golint step!
     - wercker/golint
@@ -18,4 +25,4 @@ build:
     - script:
         name: go build
         code: |
-          go build -i gist.go
+          go build gist.go
