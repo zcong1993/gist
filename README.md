@@ -1,4 +1,5 @@
 # gist
+[![CircleCI Build Status](https://circleci.com/gh/zcong1993/gist.svg?style=shield)](https://circleci.com/gh/zcong1993/gist)
 [![wercker status](https://app.wercker.com/status/a69dff6e96eca8984e750f81af414cc4/s/master "wercker status")](https://app.wercker.com/project/byKey/a69dff6e96eca8984e750f81af414cc4)
 [![Build Status](https://travis-ci.org/zcong1993/gist.svg?branch=master)](https://travis-ci.org/zcong1993/gist)
 
