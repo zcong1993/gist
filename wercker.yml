@@ -14,10 +14,8 @@ build:
     - script:
         name: go get
         code: |
-            cd $WERCKER_SOURCE_DIR
             go version
-            go get github.com/mitchellh/go-homedir
-            go get github.com/bitly/go-simplejson
+            go get -t -v ./...
 
     # golint step!
     - wercker/golint
@@ -26,4 +24,4 @@ build:
     - script:
         name: go build
         code: |
-          go build gist.go
+          go build ./...
