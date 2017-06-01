@@ -5,7 +5,7 @@ jobs:
       # CircleCI Go images available at: https://hub.docker.com/r/circleci/golang/
       - image: circleci/golang:1.8
 
-    working_directory: /go/src/github.com/zcong1993/gist
+    working_directory: /go/src/github.com/your github username/your project name
 
     steps:
       - checkout

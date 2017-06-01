@@ -95,6 +95,7 @@ func main() {
 	for _, file := range files {
 		content, err := ioutil.ReadFile(file)
 		checkError(err)
+		file = path.Base(file)
 		data.Files[file] = File{string(content)}
 	}
 	js, err := json.Marshal(&data)
