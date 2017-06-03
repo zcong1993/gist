@@ -7,7 +7,7 @@
 
 ## Usage
 
-[download](https://github.com/zcong1993/gist/releases) the package and put in any `$PATH` folder.
+[download](https://github.com/zcong1993/gist/releases) the package rename to `gist`(if not in windows) and put in any `$PATH` folder.
 
 ```bash
 # in your work folder
