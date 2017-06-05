@@ -1,17 +1,17 @@
 package main
 
 import (
+	"encoding/json"
+	"flag"
+	"fmt"
+	"github.com/bitly/go-simplejson"
+	"github.com/mitchellh/go-homedir"
 	"io/ioutil"
 	"log"
-	"path"
-	"flag"
-	"os"
-	"encoding/json"
 	"net/http"
+	"os"
+	"path"
 	"strings"
-	"github.com/mitchellh/go-homedir"
-	"github.com/bitly/go-simplejson"
-	"fmt"
 )
 
 const (
@@ -19,14 +19,14 @@ const (
 	url    = "https://api.github.com/gists"
 )
 
-// post data struct
+// Data is post data struct
 type Data struct {
-	Public      bool `json:"public"`
+	Public      bool            `json:"public"`
 	Files       map[string]File `json:"files"`
-	Description string `json:"description"`
+	Description string          `json:"description"`
 }
 
-// single file struct
+// File is single file struct
 type File struct {
 	Content string `json:"content"`
 }
@@ -60,7 +60,8 @@ func main() {
 	flag.Parse()
 	if *help {
 		fmt.Println("\nUsage :\n\tgist [flag] [files...]")
-		fmt.Println("\nFlags :\n")
+		fmt.Println("\nFlags :")
+		fmt.Println()
 		fmt.Println("\t -s, \t set token for auth")
 		fmt.Println("\t -r, \t remove token")
 		fmt.Println("\t -p, \t create public gist?")
