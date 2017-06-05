@@ -26,4 +26,4 @@ build:
     - script:
         name: go build
         code: |
-          go build gist.go
+          go build -v ./...

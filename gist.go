@@ -53,6 +53,7 @@ func main() {
 	checkError(err)
 	configFile := path.Join(home, config)
 	help := flag.Bool("h", false, "show help")
+	version := flag.Bool("v", false, "show version")
 	setKey := flag.Bool("s", false, "set token for auth")
 	delKey := flag.Bool("r", false, "remove token")
 	isPublic := flag.Bool("p", false, "create public gist?")
@@ -68,6 +69,10 @@ func main() {
 		fmt.Println("\t -d, \t add custom description, default is `published by 'zcong1993/gist' with golang`")
 		fmt.Println("\t -h, \t show help")
 		os.Exit(0)
+	}
+	if *version {
+		fmt.Println(Version())
+		return
 	}
 	if *setKey {
 		if len(flag.Args()) == 0 {
