@@ -1,35 +1,21 @@
 package main
 
 import (
-	"encoding/json"
+	"context"
 	"flag"
 	"fmt"
-	"github.com/bitly/go-simplejson"
+	"github.com/google/go-github/github"
 	"github.com/mitchellh/go-homedir"
+	"github.com/pkg/errors"
+	"golang.org/x/oauth2"
+	"golang.org/x/sync/errgroup"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 	"path"
-	"strings"
 )
 
-const (
-	config = ".gistrc"
-	url    = "https://api.github.com/gists"
-)
-
-// Data is post data struct
-type Data struct {
-	Public      bool            `json:"public"`
-	Files       map[string]File `json:"files"`
-	Description string          `json:"description"`
-}
-
-// File is single file struct
-type File struct {
-	Content string `json:"content"`
-}
+const config = ".gistrc"
 
 func checkConf(path string) string {
 	key, err := ioutil.ReadFile(path)
@@ -42,10 +28,39 @@ func checkConf(path string) string {
 	return string(key)
 }
 
+func stringAddress(v string) *string { return &v }
+
 func checkError(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func getFiles(ctx context.Context, files []string) (map[github.GistFilename]github.GistFile, error) {
+	eg, ctx := errgroup.WithContext(ctx)
+	semaphore := make(chan struct{}, len(files))
+	results := map[github.GistFilename]github.GistFile{}
+	for _, file := range files {
+		file := file
+		eg.Go(func() error {
+			semaphore <- struct{}{}
+			defer func() {
+				<-semaphore
+			}()
+			content, err := ioutil.ReadFile(file)
+			fmt.Fprintf(os.Stdout, "--> Parsing file: %15s\n", file)
+			if err != nil {
+				return errors.Wrapf(err,
+					"failed to get file content: %s", file)
+			}
+			results[github.GistFilename(path.Base(file))] = github.GistFile{Filename: stringAddress(string(path.Base(file))), Content: stringAddress(string(content))}
+			return nil
+		})
+	}
+	if err := eg.Wait(); err != nil {
+		return nil, errors.Wrap(err, "one of the goroutines failed")
+	}
+	return results, nil
 }
 
 func main() {
@@ -85,38 +100,21 @@ func main() {
 		os.Exit(0)
 	}
 	key := checkConf(configFile)
-	var data Data
-	data.Public = *isPublic
-	data.Files = map[string]File{}
-	data.Description = *description
 	files := flag.Args()
-	if len(files) == 0 {
-		log.Fatal("should add some files")
+	ctx := context.Background()
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: key},
+	)
+	tc := oauth2.NewClient(ctx, ts)
+	client := github.NewClient(tc)
+	postFiles, err := getFiles(context.TODO(), files)
+	checkError(err)
+	gist := github.Gist{
+		Public:      isPublic,
+		Files:       postFiles,
+		Description: description,
 	}
-	for _, file := range files {
-		content, err := ioutil.ReadFile(file)
-		checkError(err)
-		file = path.Base(file)
-		data.Files[file] = File{string(content)}
-	}
-	js, err := json.Marshal(&data)
+	g, _, err := client.Gists.Create(context.Background(), &gist)
 	checkError(err)
-	client := &http.Client{}
-	req, err := http.NewRequest("POST", url, strings.NewReader(string(js)))
-	checkError(err)
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "token "+key)
-	resp, err := client.Do(req)
-	checkError(err)
-	defer resp.Body.Close()
-	response, err := ioutil.ReadAll(resp.Body)
-	checkError(err)
-	json, err := simplejson.NewJson([]byte(response))
-	link, err := json.Get("html_url").String()
-	_, user := json.CheckGet("owner")
-	checkError(err)
-	fmt.Printf("\nsuccess: link is %s\n", link)
-	if !user {
-		fmt.Println("\nwarning: gist owner is null, maybe your token is not correct!")
-	}
+	fmt.Printf("Done! The gist url is %s", *g.HTMLURL)
 }
