@@ -36,8 +36,8 @@ func checkError(err error) {
 	}
 }
 
-func getFiles(ctx context.Context, files []string) (map[github.GistFilename]github.GistFile, error) {
-	eg, ctx := errgroup.WithContext(ctx)
+func getFiles(files []string) (map[github.GistFilename]github.GistFile, error) {
+	eg := errgroup.Group{}
 	semaphore := make(chan struct{}, len(files))
 	results := map[github.GistFilename]github.GistFile{}
 	for _, file := range files {
@@ -107,7 +107,7 @@ func main() {
 	)
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
-	postFiles, err := getFiles(context.TODO(), files)
+	postFiles, err := getFiles(files)
 	checkError(err)
 	gist := github.Gist{
 		Public:      isPublic,
@@ -116,5 +116,5 @@ func main() {
 	}
 	g, _, err := client.Gists.Create(context.Background(), &gist)
 	checkError(err)
-	fmt.Printf("Done! The gist url is %s", *g.HTMLURL)
+	fmt.Printf("\nDone! The gist url is %s\n", *g.HTMLURL)
 }
