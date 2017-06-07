@@ -68,11 +68,16 @@ func main() {
 	checkError(err)
 	configFile := path.Join(home, config)
 	help := flag.Bool("h", false, "show help")
+	version := flag.Bool("v", false, "show version")
 	setKey := flag.Bool("s", false, "set token for auth")
 	delKey := flag.Bool("r", false, "remove token")
 	isPublic := flag.Bool("p", false, "create public gist?")
 	description := flag.String("d", "published by 'zcong1993/gist' with golang", "add custom description")
 	flag.Parse()
+	if *version {
+		fmt.Println(Version())
+		os.Exit(0)
+	}
 	if *help {
 		fmt.Println("\nUsage :\n\tgist [flag] [files...]")
 		fmt.Println("\nFlags :")
