@@ -15,17 +15,21 @@
 $ gist [flags] [files...]
 # example
 # set token
-$ gist -s <your token> 
+$ gist -s <your token>
 # create gist with file1 and file2
-$ gist file1 file2 
-# will return gist web link 
+$ gist file1 file2
+# will return gist web link
 # create public gist
-$ gist -p file 
+$ gist -p file
 # add your custom description
-$ gist -d="your custom description" 
+$ gist -d="your custom description"
 ```
 
 You can get your gist `token` here [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new), remember to select `gist` scope.
+
+## Screenshot
+
+![gist screenshot](screenshot/gist.gif)
 
 ## Build
 
