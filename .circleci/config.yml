@@ -12,10 +12,12 @@ jobs:
 
       - run:
           name: get deps
-          command: go get -t -d -v ./...
+          command: |
+            go get -t -d -v ./...
+            go get -v github.com/mitchellh/gox
 
       - run:
           name: build
-          command:|
+          command: |
             chmod +x ./build.sh
             make build
