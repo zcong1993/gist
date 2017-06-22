@@ -21,6 +21,7 @@ build:
             go get -v golang.org/x/sync/errgroup
             go get -v golang.org/x/oauth2
             go get -v github.com/pkg/errors
+            go get -v github.com/tcnksm/go-latest
 
     # golint step!
     - wercker/golint

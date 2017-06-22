@@ -38,15 +38,10 @@ func checkError(err error) {
 
 func getFiles(files []string) (map[github.GistFilename]github.GistFile, error) {
 	eg := errgroup.Group{}
-	semaphore := make(chan struct{}, len(files))
 	results := map[github.GistFilename]github.GistFile{}
 	for _, file := range files {
 		file := file
 		eg.Go(func() error {
-			semaphore <- struct{}{}
-			defer func() {
-				<-semaphore
-			}()
 			content, err := ioutil.ReadFile(file)
 			fmt.Fprintf(os.Stdout, "--> Parsing file: %15s\n", file)
 			if err != nil {
