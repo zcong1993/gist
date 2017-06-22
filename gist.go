@@ -75,7 +75,7 @@ func main() {
 	description := flag.String("d", "published by 'zcong1993/gist' with golang", "add custom description")
 	flag.Parse()
 	if *version {
-		fmt.Println(Version())
+		Version()
 		os.Exit(0)
 	}
 	if *help {
