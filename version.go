@@ -3,15 +3,14 @@ package main
 import (
 	"bytes"
 	"fmt"
-	latest "github.com/tcnksm/go-latest"
 	"time"
+
+	latest "github.com/tcnksm/go-latest"
 )
 
 const (
 	// AppName is the cli name
 	AppName = "gist"
-	// AppVersion is current version of cli
-	AppVersion = "v2.1.0"
 
 	defaultCheckTimeout = 2 * time.Second
 )
@@ -19,9 +18,12 @@ const (
 // GitCommit is cli current git commit hash
 var GitCommit string
 
+// Config.
+var version = "master"
+
 // Version show the cli's current version
 func Version() {
-	version := fmt.Sprintf("\n%s %s", AppName, AppVersion)
+	version := fmt.Sprintf("\n%s %s", AppName, version)
 	if len(GitCommit) != 0 {
 		version += fmt.Sprintf(" (%s)", GitCommit)
 	}
@@ -37,7 +39,7 @@ func Version() {
 			FixVersionStrFunc: fixFunc,
 		}
 
-		res, err := latest.Check(githubTag, fixFunc(AppVersion))
+		res, err := latest.Check(githubTag, fixFunc(version))
 		if err != nil {
 			// Don't return error
 			return
