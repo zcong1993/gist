@@ -39,7 +39,7 @@ func Version() {
 			FixVersionStrFunc: fixFunc,
 		}
 
-		res, err := latest.Check(githubTag, fixFunc(version))
+		res, err := latest.Check(githubTag, version)
 		if err != nil {
 			// Don't return error
 			return
