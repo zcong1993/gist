@@ -6,4 +6,4 @@ build:
     - linux
   goarch:
     - amd64
-  ldflags: -s -w -X main.GitCommit={{.Commit}}
+  ldflags: -s -w -X main.GitCommit={{.Commit}} -X main.version={{.Version}}
