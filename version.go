@@ -19,7 +19,7 @@ const (
 var GitCommit string
 
 // Config.
-var version = "master"
+var version = "v2.2.2"
 
 // Version show the cli's current version
 func Version() {
