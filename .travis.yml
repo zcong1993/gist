@@ -1,12 +1,18 @@
 language: go
-
 go:
-  - 1.8
-
+- 1.9
 install:
-  - go get -t -v ./...
-  - go get -v github.com/mitchellh/gox
-
+- go get -t -v ./...
+- go get -v github.com/mitchellh/gox
 script:
-  - chmod +x ./build.sh
-  - make build
+- chmod +x ./build.sh
+- make build
+deploy:
+  provider: releases
+  api_key:
+    secure: S/gxMpW9jR3Ln9tHKpBYffsTLJ281rGTW1KjLxYRYg/3O0RKPjIz/M7+HT4d/Lv9EBFENVbVHV5Tk8+dRPhPqFsYqa0kFbbgVhEMuF4mq0Qdvc80giyVZPebryRrGP2hfJMdHgb5eweJLdO+9P6bQy7i6kd7e+yZJ4bC49iyGCD0cXJAn6nTcBJlrSfITxMUKz5gz0rNmoj7AiFncL4WTTdk3gsukrmiXN5emFmlnuTzTRmMtB80n1zWhMlx3IyYP3Ii4EBfAOWS8veqO7bXrB49vNUc0zDKjQakr7mlA2b4xL8rGGNL0ee9S+flQTjrD/gElaA4NvAz58Hrly+sGzPCgO8LQ+8g33+0ClQXBKhdle35n2TcNs1NGlgR2pSNCNSgJg4ohNxAhUFlYrROwu9IwASuKEJsE45FL+Vo3jlIOfM0BlyGPO6B1mYTUwjKBoY4+QEmljc05ClLbUSoi6BCiksNJSyajL5OjDtLs5ZO6CCh23mSB1hsLq53YDuQT46yxUnQ6VvuxDX8aXtFFQRlU1LZA/bMGiLJoZZ+evnNWV8PXoYyj7HGoDzFBuIPymRM5w5gM4slOsBAf8UpbQYS/+H0cQNlsyk7vamtyW4khIk5k0zlljpQjBnmJoHC/6lI+bHcKjhhnJKqKq9lTdQGS50lxkZrKAFupxE41o8=
+  file: bin/*
+  file_glob: true
+  skip_cleanup: true
+  on:
+    tags: true
